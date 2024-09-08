@@ -69,11 +69,11 @@ The binomial pricing model calculates the price of European call and put options
 #### Call Option Price:
 
 $$
-C = \text{Discount Factor} \times ( q \cdot \text{Call Value}_{\text{up}} + (1 - q) \cdot \text{Call Value}_{\text{down}})
+C = Discount Factor \times ( q \cdot \text{Call Value}_{\text{up}} + (1 - q) \cdot \text{Call Value}_{\text{down}})
 $$
 #### Put Option Price:
 
 $$
-P = \text{Discount Factor} \times ( q \cdot \text{Put Value}_{\text{up}} + (1 - q) \cdot \text{Put Value}_{\text{down}})
+P = Discount Factor \times ( q \cdot \text{Put Value} + (1 - q) \cdot \text{Put Value})
 $$
 
