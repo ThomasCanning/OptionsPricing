@@ -80,13 +80,35 @@ class OptionsPriceCalculatorApp:
         call_price = s * norm.cdf(d1) - k * math.exp(-r * t) * norm.cdf(d2)
         put_price = k * math.exp(-r * t) * norm.cdf(-d2) - s * norm.cdf(-d1)
 
-        self.call_price_label.config(text=f"Call Price: {round(call_price, 4)}")
-        self.put_price_label.config(text=f"Put Price: {round(put_price, 4)}")
+        self.call_price_label.config(text=f"Call Price: {round(call_price, 2)}")
+        self.put_price_label.config(text=f"Put Price: {round(put_price, 2)}")
 
     def calculate_binomial(self, s, k, t, r, v):
-        # Placeholder for Binomial model calculation
-        self.call_price_label.config(text="Call Price: [Binomial result]")
-        self.put_price_label.config(text="Put Price: [Binomial result]")
+        n = 1000  # Number of time steps = depth of binomial tree
+
+        dt = t / n
+        u = np.exp(v * np.sqrt(dt))   # Up factor = factor by which the underlying asset price increases
+        d = np.exp(-v * np.sqrt(dt))  # Down factor = factor by which the underlying asset price decreases
+        q = (np.exp(r * dt) - d) / (u - d)
+        disc = np.exp(-r * dt)
+
+        # Initialize asset prices at maturity
+        asset_prices = s * d**np.arange(n, -1, -1) * u**np.arange(0, n + 1, 1)
+
+        # Initialize option values at maturity
+        call_values = np.maximum(asset_prices - k, 0)
+        put_values = np.maximum(k - asset_prices, 0)
+
+        # Step backwards through the tree
+        for i in range(n, 0, -1):
+            call_values = disc * (q * call_values[1:i + 1] + (1 - q) * call_values[0:i])
+            put_values = disc * (q * put_values[1:i + 1] + (1 - q) * put_values[0:i])
+
+        call_price = call_values[0]
+        put_price = put_values[0]
+
+        self.call_price_label.config(text=f"Call Price: {round(call_price, 2)}")
+        self.put_price_label.config(text=f"Put Price: {round(put_price, 2)}")
 
 
 if __name__ == "__main__":
