@@ -75,5 +75,5 @@ $$
 #### Put Option Price:
 
 $$
-P = Discount Factor \times ( q \cdot \text{Put Value}_{\text{up}} \plus (1 - q) \cdot \text{Put Value}_{\text{down}})
+P = \text{Discount Factor} \times \left( q \cdot \text{Put Value}_{\text{up}} + (1 - q) \cdot \text{Put Value}_{\text{down}} \right)
 $$
