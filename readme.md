@@ -1,14 +1,16 @@
 # Black-Scholes Option Pricing Model
 
-This script calculates the price of European call and put options using the Black-Scholes formula.
+This script calculates the price of European call and put options, using either the Black-Scholes formula or the binomial pricing model.
 
-### Variables
+## Variables
 
 - **s**: Spot price (current market price of the underlying asset) = 42
 - **k**: Strike price (price at which the option can be exercised) = 40
 - **t**: Time to expiration (in years) = 0.5
 - **r**: Risk-free rate (annualized) = 0.1
 - **v**: Volatility (standard deviation of the underlying asset's price) = 0.2
+
+## Pricing models
 
 ### Black-Scholes Formula
 
@@ -47,3 +49,6 @@ Where:
 $$
 P = k \cdot e^{-rt} \cdot N(-d_2) - s \cdot N(-d_1)
 $$
+
+### Binomial Pricing Model
+
