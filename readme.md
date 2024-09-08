@@ -67,8 +67,8 @@ The binomial pricing model calculates the price of European call and put options
     - For each time step, calculate the option values by taking the risk-neutral expected value of the option values at the next step and discounting it to the current step.
 
 #### Call Option Price:
-D = Discount Factor
-$c_{up}$ = Call Value at the up node
+$D$ = Discount Factor \n
+$c_{up}$ = Call Value at the up node \n
 $c_{down}$ = Call Value at the down node
 
 $$
@@ -77,8 +77,8 @@ $$
 
 #### Put Option Price:
 
-D = Discount Factor
-$p_{up}$ = Put Value at the up node
+$D$ = Discount Factor \n
+$p_{up}$ = Put Value at the up node \n
 $p_{down}$ = Put Value at the down node
 
 $$
