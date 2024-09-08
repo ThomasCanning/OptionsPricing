@@ -1,13 +1,14 @@
-# Black-Scholes Option Pricing Model
+# Options Pricing Calculator
 
 This script calculates the price of European call and put options, using either the Black-Scholes formula or the binomial pricing model.
+The models are based on the book "Options, Futures, and Other Derivatives" by John C. Hull (5th edition).
 
 ## Variables
 
-- **s**: Spot price (current market price of the underlying asset) = 42
-- **k**: Strike price (price at which the option can be exercised) = 40
-- **t**: Time to expiration (in years) = 0.5
-- **r**: Risk-free rate (annualized) = 0.1
+- **s**: Spot price (current market price of the underlying asset)
+- **k**: Strike price (price at which the option can be exercised)
+- **t**: Time to expiration (in years)
+- **r**: Risk-free rate (annualized), set as the current 10-year US Treasury yield by default, obtained from the alpha-vantage API
 - **v**: Volatility (standard deviation of the underlying asset's price) = 0.2
 
 ## Pricing models
@@ -26,14 +27,6 @@ $$
 d_2 = d_1 - v \cdot \sqrt{t}
 $$
 
-Where:
-
-- \(s\) is the spot price
-- \(k\) is the strike price
-- \(t\) is the time to expiration
-- \(r\) is the risk-free interest rate
-- \(v\) is the volatility (standard deviation of returns)
-
 #### Call Option Price:
 
 $$
@@ -51,4 +44,37 @@ P = k \cdot e^{-rt} \cdot N(-d_2) - s \cdot N(-d_1)
 $$
 
 ### Binomial Pricing Model
+
+The binomial pricing model calculates the price of European call and put options using a binomial tree approach.
+
+#### Steps:
+
+1. **Set Up the Binomial Tree:**
+    - **Number of Time Steps (n):** Defines the depth of the tree.
+    - **Time Step Length (dt):** Time per step, calculated as \( \frac{t}{n} \).
+    - **Up Factor (u):** Represents the factor by which the asset price increases in one time step, calculated as \( e^{v \cdot \sqrt{dt}} \).
+    - **Down Factor (d):** Represents the factor by which the asset price decreases in one time step, calculated as \( e^{-v \cdot \sqrt{dt}} \).
+    - **Risk-Neutral Probability (q):** Probability of an up move under the risk-neutral measure, calculated as \( \frac{e^{r \cdot dt} - d}{u - d} \).
+    - **Discount Factor (disc):** Factor to discount future values to present value, calculated as \( e^{-r \cdot dt} \).
+
+2. **Initialize Asset Prices at Maturity:**
+    - Compute all possible asset prices at the option's maturity based on different paths through the tree.
+
+3. **Initialize Option Values at Maturity:**
+    - Compute the option values at maturity for call and put options based on the asset prices.
+
+4. **Step Backwards Through the Tree:**
+    - For each time step, calculate the option values by taking the risk-neutral expected value of the option values at the next step and discounting it to the current step.
+
+#### Call Option Price:
+
+$$
+C = \text{Discount Factor} \times \left( q \cdot \text{Call Value}_{\text{up}} + (1 - q) \cdot \text{Call Value}_{\text{down}} \right)
+$$
+
+#### Put Option Price:
+
+$$
+P = \text{Discount Factor} \times \left( q \cdot \text{Put Value}_{\text{up}} + (1 - q) \cdot \text{Put Value}_{\text{down}} \right)
+$$
 
