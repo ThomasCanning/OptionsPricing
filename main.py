@@ -1,13 +1,25 @@
 import tkinter as tk
-import math
-import numpy as np
-from scipy.stats import norm
+
+from api_calls import ApiCalls
+from pricing_models import PricingModels
 
 
 class OptionsPriceCalculatorApp:
     def __init__(self, root):
+        self.call_price_label = None
+        self.put_price_label = None
+        self.model_var = None
+        self.risk_free_rate_entry = None
+        self.time_to_expiration_entry = None
+        self.strike_price_entry = None
+        self.spot_price_entry = None
+        self.volatility_entry = None
+        
         self.root = root
         self.root.title("Options Price Calculator")
+
+        self.api = ApiCalls()
+        self.models = PricingModels()
 
         self.create_widgets()
 
@@ -28,9 +40,10 @@ class OptionsPriceCalculatorApp:
         self.time_to_expiration_entry = tk.Entry(self.root)
         self.time_to_expiration_entry.grid(row=2, column=1, columnspan=2)
 
-        # Risk-Free Rate text entry
+        # Risk-Free Rate text entry, set with default value of the current US Treasury 10-year yield retrieved from the alpha-vantage API
         tk.Label(self.root, text="Risk-Free Rate:").grid(row=3, column=0)
         self.risk_free_rate_entry = tk.Entry(self.root)
+        self.risk_free_rate_entry.insert(0, self.api.get_us_treasury_yield())
         self.risk_free_rate_entry.grid(row=3, column=1, columnspan=2)
 
         # Volatility text entry
@@ -57,58 +70,27 @@ class OptionsPriceCalculatorApp:
 
     def calculate_prices(self):
         try:
-            s = float(self.spot_price_entry.get())          # Spot price = current market price of underlying asset
-            k = float(self.strike_price_entry.get())        # Strike price = price option can be exercised for at expiration
-            t = float(self.time_to_expiration_entry.get())  # Time to expiration = years until option expires and can be exercised
-            r = float(self.risk_free_rate_entry.get())      # Risk-free rate = return that can be made risk-free
-            v = float(self.volatility_entry.get())          # Volatility = standard deviation of the underlying asset's price
+            s = float(self.spot_price_entry.get())
+            k = float(self.strike_price_entry.get())
+            t = float(self.time_to_expiration_entry.get())
+            r = float(self.risk_free_rate_entry.get())
+            v = float(self.volatility_entry.get())
 
             model = self.model_var.get()
+            self.models.update_parameters(s, k, t, r, v)
 
+            values = None
             if model == "Black-Scholes":
-                self.calculate_black_scholes(s, k, t, r, v)
+                values = self.models.calculate_black_scholes()
             elif model == "Binomial":
-                self.calculate_binomial(s, k, t, r, v)
+                values = self.models.calculate_binomial()
+
+            self.call_price_label.config(text=f"Call Price: {values[0]:.2f}")
+            self.put_price_label.config(text=f"Put Price: {values[1]:.2f}")
 
         except ValueError:
             self.call_price_label.config(text="Invalid input to calculate call price")
             self.put_price_label.config(text="Invalid input to calculate put price")
-
-    def calculate_black_scholes(self, s, k, t, r, v):
-        d1 = (math.log(s / k) + (r + (v ** 2) / 2) * t) / (v * math.sqrt(t))
-        d2 = d1 - v * math.sqrt(t)
-        call_price = s * norm.cdf(d1) - k * math.exp(-r * t) * norm.cdf(d2)
-        put_price = k * math.exp(-r * t) * norm.cdf(-d2) - s * norm.cdf(-d1)
-
-        self.call_price_label.config(text=f"Call Price: {round(call_price, 2)}")
-        self.put_price_label.config(text=f"Put Price: {round(put_price, 2)}")
-
-    def calculate_binomial(self, s, k, t, r, v):
-        n = 1000  # Number of time steps = depth of binomial tree
-
-        dt = t / n
-        u = np.exp(v * np.sqrt(dt))   # Up factor = factor by which the underlying asset price increases
-        d = np.exp(-v * np.sqrt(dt))  # Down factor = factor by which the underlying asset price decreases
-        q = (np.exp(r * dt) - d) / (u - d)
-        disc = np.exp(-r * dt)
-
-        # Initialize asset prices at maturity
-        asset_prices = s * d**np.arange(n, -1, -1) * u**np.arange(0, n + 1, 1)
-
-        # Initialize option values at maturity
-        call_values = np.maximum(asset_prices - k, 0)
-        put_values = np.maximum(k - asset_prices, 0)
-
-        # Step backwards through the tree
-        for i in range(n, 0, -1):
-            call_values = disc * (q * call_values[1:i + 1] + (1 - q) * call_values[0:i])
-            put_values = disc * (q * put_values[1:i + 1] + (1 - q) * put_values[0:i])
-
-        call_price = call_values[0]
-        put_price = put_values[0]
-
-        self.call_price_label.config(text=f"Call Price: {round(call_price, 2)}")
-        self.put_price_label.config(text=f"Put Price: {round(put_price, 2)}")
 
 
 if __name__ == "__main__":
