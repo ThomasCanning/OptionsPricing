@@ -51,7 +51,7 @@ The binomial pricing model calculates the price of European call and put options
 
 1. **Set Up the Binomial Tree:**
     - **Number of Time Steps (n):** Defines the depth of the tree.
-    - **Time Step Length (dt):** Time per step, calculated as \( \frac{t}{n} \).
+    - **Time Step Length (dt):** Time per step, calculated as $\( \frac{t}{n} \).$
     - **Up Factor (u):** Represents the factor by which the asset price increases in one time step, calculated as \( e^{v \cdot \sqrt{dt}} \).
     - **Down Factor (d):** Represents the factor by which the asset price decreases in one time step, calculated as \( e^{-v \cdot \sqrt{dt}} \).
     - **Risk-Neutral Probability (q):** Probability of an up move under the risk-neutral measure, calculated as \( \frac{e^{r \cdot dt} - d}{u - d} \).
