@@ -5,7 +5,7 @@ The models are based on the book "Options, Futures, and Other Derivatives" by Jo
 Additionally, you can plot each variable against the options call or put price to visualize the impact of each variable on the option price.
 
 ## Screenshots
-<img src="screenshots/s1.png" width="425"/> <img src="screenshots/s2.png" width="425"/>
+<img src="screenshots/s1.png" width="425" alt="Screenshot 1"/> <img src="screenshots/s2.png" width="425" alt="Screenshot 2"/>
 
 
 ## Variables
