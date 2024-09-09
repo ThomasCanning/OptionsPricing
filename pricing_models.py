@@ -21,14 +21,12 @@ class PricingModels:
 
     def calculate_black_scholes(self):
         s, k, t, r, v = self.s, self.k, self.t, self.r, self.v
-        print(s, k, t, r, v)
 
         d1 = (math.log(s / k) + (r + (v ** 2) / 2) * t) / (v * math.sqrt(t))
         d2 = d1 - v * math.sqrt(t)
         call_price = s * norm.cdf(d1) - k * math.exp(-r * t) * norm.cdf(d2)
         put_price = k * math.exp(-r * t) * norm.cdf(-d2) - s * norm.cdf(-d1)
 
-        print(call_price, put_price)
         return call_price, put_price
 
     def calculate_binomial(self):
