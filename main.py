@@ -32,12 +32,12 @@ class OptionsPriceCalculatorApp:
 
     def create_widgets(self):
         tk.Label(self.root, text="Spot Price:").grid(row=0, column=0)
-        self.spot_price_slider = tk.Scale(self.root, from_= 10, to= 200, orient='horizontal', command=self.update_plot)
+        self.spot_price_slider = tk.Scale(self.root, from_= 10, to= 200, orient='horizontal', command=self.update_plot, resolution=5)
         self.spot_price_slider.set(100)
         self.spot_price_slider.grid(row=0, column=1, columnspan=2)
 
         tk.Label(self.root, text="Strike Price:").grid(row=1, column=0)
-        self.strike_price_slider = tk.Scale(self.root, from_=10, to=200, orient='horizontal', command=self.update_plot)
+        self.strike_price_slider = tk.Scale(self.root, from_=10, to=200, orient='horizontal', command=self.update_plot, resolution=5)
         self.strike_price_slider.set(100)
         self.strike_price_slider.grid(row=1, column=1, columnspan=2)
 
