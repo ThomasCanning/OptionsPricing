@@ -2,6 +2,7 @@
 
 This script calculates the price of European call and put options, using either the Black-Scholes formula or the binomial pricing model.
 The models are based on the book "Options, Futures, and Other Derivatives" by John C. Hull (5th edition).
+Additionally, you can plot each variable against the options call or put price to visualize the impact of each variable on the option price.
 
 ## Variables
 
@@ -50,7 +51,7 @@ The binomial pricing model calculates the price of European call and put options
 #### Steps:
 
 1. **Set Up the Binomial Tree:**
-    - **Number of Time Steps (n):** Defines the depth of the tree.
+    - **Number of Time Steps (n):** Defines the depth of the tree, set to 100.
     - **Time Step Length (dt):** Time per step, calculated as $\( \frac{t}{n} \)$.
     - **Up Factor (u):** Represents the factor by which the asset price increases in one time step, calculated as $\( e^{v \cdot \sqrt{dt}} \)$.
     - **Down Factor (d):** Represents the factor by which the asset price decreases in one time step, calculated as $\( e^{-v \cdot \sqrt{dt}} \)$.

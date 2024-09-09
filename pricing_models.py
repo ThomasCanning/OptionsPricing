@@ -21,24 +21,26 @@ class PricingModels:
 
     def calculate_black_scholes(self):
         s, k, t, r, v = self.s, self.k, self.t, self.r, self.v
+        print(s, k, t, r, v)
 
         d1 = (math.log(s / k) + (r + (v ** 2) / 2) * t) / (v * math.sqrt(t))
         d2 = d1 - v * math.sqrt(t)
         call_price = s * norm.cdf(d1) - k * math.exp(-r * t) * norm.cdf(d2)
         put_price = k * math.exp(-r * t) * norm.cdf(-d2) - s * norm.cdf(-d1)
 
+        print(call_price, put_price)
         return call_price, put_price
 
     def calculate_binomial(self):
         s, k, t, r, v = self.s, self.k, self.t, self.r, self.v
 
-        n = 1000  # Number of time steps, i.e. depth of binomial tree
+        n = 100  # Number of time steps, i.e. depth of binomial tree
 
-        dt = t / n  # Length of each time step
-        u = np.exp(v * np.sqrt(dt))  # Up factor = how much the underlying asset price increases in 1 step
-        d = np.exp(-v * np.sqrt(dt))  # Down factor = how much the underlying asset price decreases in 1 step
+        dt = t / n                          # Length of each time step
+        u = np.exp(v * np.sqrt(dt))         # Up factor = how much the underlying asset price increases in 1 step
+        d = np.exp(-v * np.sqrt(dt))        # Down factor = how much the underlying asset price decreases in 1 step
         q = (np.exp(r * dt) - d) / (u - d)  # Risk-neutral probability of up move
-        disc = np.exp(-r * dt)  # Discount factor, i.e. uses risk-free rate to discount future cash flows
+        disc = np.exp(-r * dt)              # Discount factor, i.e. uses risk-free rate to discount future cash flows
 
         # Initialize all possible asset prices at maturity based on all the different paths through the tree
         asset_prices = s * d ** np.arange(n, -1, -1) * u ** np.arange(0, n + 1, 1)
