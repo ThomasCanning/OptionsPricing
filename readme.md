@@ -1,6 +1,6 @@
 # Options Pricing Calculator
 
-This script calculates the price of European call and put options, using either the Black-Scholes formula or the binomial pricing model.
+This tool calculates the price of European call and put options, using either the Black-Scholes formula or the binomial pricing model.
 The models are based on the book "Options, Futures, and Other Derivatives" by John C. Hull (5th edition).
 Additionally, you can plot each variable against the options call or put price to visualize the impact of each variable on the option price.
 
