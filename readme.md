@@ -6,8 +6,7 @@ Additionally, you can plot each variable against the options call or put price t
 
 ## Screenshots
 
-![Screenshot 1](screenshots/s1.png)
-![Screenshot 2](screenshots/s2.png)
+![Screenshot 1](screenshots/s1.png) ![Screenshot 2](screenshots/s2.png)
 
 
 ## Variables
